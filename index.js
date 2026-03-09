@@ -9,7 +9,7 @@ const issueSearchEndpoint="https://corsproxy.io/?https://phi-lab-server.vercel.a
 
 
 const getIssues=(filterType="all")=>{
-    
+
 //  spinner 
 
 loadingSpinner.classList.remove("hidden")
@@ -59,9 +59,7 @@ issueCard.innerHTML=`
 
 <div class="flex items-center gap-2">
 
-<img src="${issue.status==="open"
-?"assets/Open-Status.png"
-:"assets/Closed- Status .png"}"
+<img src="${issue.status==="open"?"assets/Open-Status.png":"assets/Closed- Status .png"}"
 class="w-5 h-5"/>
 
 <span class="text-xs font-semibold text-gray-500 uppercase">
@@ -71,11 +69,7 @@ ${issue.status}
 </div>
 
 <span class="px-3 py-1 text-xs font-semibold rounded-full
-${issue.priority==="HIGH"
-?"bg-red-100 text-red-600"
-:issue.priority==="MEDIUM"
-?"bg-yellow-100 text-yellow-600"
-:"bg-gray-100 text-gray-600"}">
+${issue.priority==="HIGH" ?"bg-red-100 text-red-600" :issue.priority==="MEDIUM" ?"bg-yellow-100 text-yellow-600" :"bg-gray-100 text-gray-600"}">
 
 ${issue.priority}
 
