@@ -1,11 +1,185 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Github tracker</title>
+
+<meta charset="UTF-8">
+<title>GitHub Issues Tracker</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
 </head>
-<body>
-    
+
+<body class="bg-gray-100">
+
+
+<div class="navbar bg-white shadow px-8">
+
+<div class="flex-1 font-bold text-lg gap-">
+
+<img class="w-8" src="assets/github-logo.png">
+GitHub Issues Tracker
+
+</div>
+
+<div class="flex gap-2">
+
+<input id="searchField"
+type="text"
+placeholder="Search issues"
+class="input input-bordered w-64"/>
+
+<button onclick="findIssue()" class="btn btn-primary">
+Search
+</button>
+
+</div>
+
+</div>
+
+
+<div class="p-8 max-w-7xl mx-auto">
+
+
+<div class="tabs tabs-boxed flex gap-2 mb-6 bg-white p-2 rounded-lg w-fit shadow">
+
+<button class="tab tab-active"
+onclick="fetchIssues('all');activeTab(this)">
+All
+</button>
+
+<button class="tab"
+onclick="fetchIssues('open');activeTab(this)">
+Open
+</button>
+
+<button class="tab"
+onclick="fetchIssues('closed');activeTab(this)">
+Closed
+</button>
+
+</div>
+
+
+<div class="flex justify-between items-center mb-6">
+
+<div class="flex items-center gap-2">
+
+<img src="assets/Aperture.png" class="w-6 h-6"/>
+
+<span id="issueTotal" class="font-semibold">
+0 Issues
+</span>
+
+<span class="text-gray-500">
+Track and manage your project issues
+</span>
+
+</div>
+
+<div class="flex gap-4 text-sm">
+
+<span class="flex items-center gap-1">
+
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+Open
+
+</span>
+
+<span class="flex items-center gap-1">
+
+<span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+Closed
+
+</span>
+
+</div>
+
+</div>
+
+
+<div id="loader" class="flex justify-center my-10 hidden">
+
+<span class="loading loading-spinner loading-lg"></span>
+
+</div>
+
+
+<div id="issueBox"
+class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+</div>
+
+</div>
+
+
+<dialog id="detailsModal" class="modal">
+
+<div class="modal-box">
+
+<h3 id="titleView" class="font-bold text-lg"></h3>
+
+<div class="flex gap-2 items-center text-sm mt-2">
+
+<span class="badge badge-success">Opened</span>
+
+<span id="authorView"></span>
+
+<span id="dateView"></span>
+
+</div>
+
+<div class="flex gap-2 mt-3">
+
+<span class="badge badge-error">BUG</span>
+
+<span class="badge badge-warning">HELP WANTED</span>
+
+</div>
+
+<p id="descView" class="py-4 text-sm"></p>
+
+<div class="bg-base-200 p-3 rounded-lg flex justify-between">
+
+<div>
+
+<p class="text-xs text-gray-500">Assignee</p>
+
+<p id="authorView2"></p>
+
+</div>
+
+<div>
+
+<p class="text-xs text-gray-500">Priority</p>
+
+<p id="priorityView"></p>
+
+</div>
+
+</div>
+
+<div class="modal-action">
+
+<form method="dialog">
+
+<button class="btn btn-primary">
+Close
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</dialog>
+
+<script src="index.js"></script>
+
 </body>
 </html>
