@@ -77,11 +77,11 @@ ${issue.priority}
 
 </div>
 
-<h2 class="font-semibold text-sm mb-2 leading-5">
+<h2 class="font-bold text-xl text-black mb-2 leading-5">
 ${issue.title}
 </h2>
 
-<p class="text-xs text-gray-500 mb-4">
+<p class="text-xs text-gray-600 mb-4">
 ${issue.description.slice(0,80)}...
 </p>
 
@@ -91,7 +91,7 @@ ${issue.description.slice(0,80)}...
 BUG
 </span>
 
-<span class="text-xs border border-orange-300 text-orange-500 px-2 py-1 rounded">
+<span class="text-xs border border-orange-400 text-orange-600 px-2 py-1 rounded">
 HELP WANTED
 </span>
 
