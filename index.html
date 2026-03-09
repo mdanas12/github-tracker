@@ -1,10 +1,13 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
 <title>GitHub Issues Tracker</title>
+<link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon">
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -13,28 +16,32 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
 </head>
 
 <body class="bg-gray-100">
 
-
 <div class="navbar bg-white shadow px-8">
 
-<div class="flex-1 font-bold text-lg gap-">
+<div class="flex-1 font-bold text-lg gap-2">
 
-<img class="w-8" src="assets/github-logo.png">
-GitHub Issues Tracker
+<img class="w-8" src="assets/github-logo.png" alt="">
+<h2>GitHub Issues Tracker</h2>
 
 </div>
 
 <div class="flex gap-2">
 
-<input id="searchField"
+<input id="issueSearchField"
 type="text"
 placeholder="Search issues"
 class="input input-bordered w-64"/>
 
-<button onclick="findIssue()" class="btn btn-primary">
+<button onclick="findIssues()" class="btn btn-primary">
 Search
 </button>
 
@@ -45,91 +52,96 @@ Search
 
 <div class="p-8 max-w-7xl mx-auto">
 
-
-<div class="tabs tabs-boxed flex gap-2 mb-6 bg-white p-2 rounded-lg w-fit shadow">
+<div class="tabs tabs-boxed flex gap-2 mb-6 bg-white p-5 rounded-lg w-fit shadow">
 
 <button class="tab tab-active"
-onclick="fetchIssues('all');activeTab(this)">
+onclick="getIssues('all');activateTab(this)">
 All
 </button>
 
 <button class="tab"
-onclick="fetchIssues('open');activeTab(this)">
+onclick="getIssues('open');activateTab(this)">
 Open
 </button>
 
 <button class="tab"
-onclick="fetchIssues('closed');activeTab(this)">
+onclick="getIssues('closed');activateTab(this)">
 Closed
 </button>
 
 </div>
 
 
-<div class="flex justify-between items-center mb-6">
+<div class="flex items-center justify-between bg-white p-4 rounded-lg shadow mb-6">
 
-<div class="flex items-center gap-2">
+<div class="flex items-center gap-3">
 
 <img src="assets/Aperture.png" class="w-6 h-6"/>
 
-<span id="issueTotal" class="font-semibold">
+<h2 id="totalIssuesText" class="font-semibold text-gray-800">
 0 Issues
-</span>
+</h2>
 
-<span class="text-gray-500">
+<span class="text-gray-400 text-sm">
 Track and manage your project issues
 </span>
 
 </div>
 
-<div class="flex gap-4 text-sm">
+<div class="flex items-center gap-4 text-sm">
 
-<span class="flex items-center gap-1">
+<div class="flex items-center gap-1">
 
 <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-Open
 
+<span class="text-gray-600">
+Open
 </span>
 
-<span class="flex items-center gap-1">
+</div>
+
+<div class="flex items-center gap-1">
 
 <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
-Closed
 
+<span class="text-gray-600">
+Closed
 </span>
 
 </div>
 
 </div>
 
+</div>
 
-<div id="loader" class="flex justify-center my-10 hidden">
+
+<div id="loadingSpinner" class="flex justify-center my-10 hidden">
 
 <span class="loading loading-spinner loading-lg"></span>
 
 </div>
 
 
-<div id="issueBox"
-class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div id="issuesGrid"
+class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 </div>
 
 </div>
 
 
-<dialog id="detailsModal" class="modal">
+<dialog id="detailsModalBox" class="modal">
 
 <div class="modal-box">
 
-<h3 id="titleView" class="font-bold text-lg"></h3>
+<h3 id="detailsTitle" class="font-bold text-lg"></h3>
 
 <div class="flex gap-2 items-center text-sm mt-2">
 
 <span class="badge badge-success">Opened</span>
 
-<span id="authorView"></span>
+<span id="detailsAuthor"></span>
 
-<span id="dateView"></span>
+<span id="detailsDate"></span>
 
 </div>
 
@@ -141,7 +153,7 @@ class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
 </div>
 
-<p id="descView" class="py-4 text-sm"></p>
+<p id="detailsDescription" class="py-4 text-sm"></p>
 
 <div class="bg-base-200 p-3 rounded-lg flex justify-between">
 
@@ -149,7 +161,7 @@ class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
 <p class="text-xs text-gray-500">Assignee</p>
 
-<p id="authorView2"></p>
+<p id="detailsAuthor2"></p>
 
 </div>
 
@@ -157,7 +169,7 @@ class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
 <p class="text-xs text-gray-500">Priority</p>
 
-<p id="priorityView"></p>
+<p id="detailsPriority"></p>
 
 </div>
 
@@ -179,7 +191,9 @@ Close
 
 </dialog>
 
-<script src="index.js"></script>
+<script src="index.js">
+
+</script>
 
 </body>
 </html>
